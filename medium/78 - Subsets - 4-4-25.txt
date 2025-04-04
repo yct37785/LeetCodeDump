@@ -1,0 +1,22 @@
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        # backtracking:
+        # lhs = include num, rhs = exclude num
+        # subset once reach leaf node
+        results = []
+        curr = []
+
+        def dfs(i):
+            # exit once reach leaf node
+            if i == len(nums):
+                results.append(curr.copy())
+                return
+            # lhs = include
+            curr.append(nums[i])
+            dfs(i + 1)
+            curr.pop()
+            # rhs = exclude
+            dfs(i + 1)
+        
+        dfs(0)
+        return results
