@@ -1,0 +1,42 @@
+from collections import deque
+
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        results = []
+        # naive: find max for each window, runtime O(n*k)
+        # for i in range(len(nums) - k + 1):
+        #     max_num = nums[i]
+        #     for j in range(i + 1, i + k):
+        #         if max_num < nums[j]:
+        #             max_num = nums[j]
+        #     results.append(max_num)
+        # return results
+
+        # O(n) approach: monotonically decreasing queue
+        # lhs must always be largest value in window
+        # O(n) as each elem is added and removed at most once
+        # deque stores idx so that we can check out of bounds
+        queue = deque()
+        l = r = 0
+
+        while r < len(nums):
+            # remove smaller elems to the left
+            while queue and nums[queue[-1]] < nums[r]:
+                queue.pop()
+            
+            # add curr to rhs as it is smallest in queue
+            queue.append(r)
+
+            # if we reach the end of current window, lhs is max
+            if r - l + 1 == k:
+                results.append(nums[queue[0]])
+                l += 1
+            
+            # out of bounds check
+            if queue[0] < l:
+                queue.popleft()
+            
+            # continue moving right
+            r += 1
+        
+        return results
