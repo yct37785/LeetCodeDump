@@ -14,19 +14,21 @@ class Solution:
         # track occurrences of the chrs
         c_occurs = {}
         partition_count = 0
+        none_zero_occur = 0
         # iterate s
         for i in range(len(s)):
             partition_count += 1
             c = s[i]
             # c occurs
-            c_occurs[c] = c_occurs.get(c, c_counts[c]) - 1
-            # check if all occurences are 0
-            is_all_zero = True
-            for v in c_occurs.values():
-                if v > 0:
-                    is_all_zero = False
+            if c not in c_occurs:
+                none_zero_occur += 1
+                c_occurs[c] = c_counts[c]
+            c_occurs[c] -= 1
+            # check if 0
+            if c_occurs[c] == 0:
+                none_zero_occur -= 1
             # we found the partition
-            if is_all_zero:
+            if none_zero_occur == 0:
                 partitions.append(partition_count)
                 partition_count = 0
                 c_occurs.clear()
