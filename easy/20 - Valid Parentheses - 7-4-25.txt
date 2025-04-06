@@ -1,0 +1,26 @@
+class Solution:
+    def isValid(self, s: str) -> bool:
+        # map of corr. open and close parentheses
+        # every open parentheses added to stack
+        # every close must corr. to stack of open parentheses
+        close_map = {
+            ')': '(',
+            '}': '{',
+            ']': '[',
+        }
+        stack = []
+        for c in s:
+            # is open
+            if c not in close_map:
+                stack.append(c)
+            # close
+            else:
+                # if top open parentheses match
+                if stack and close_map[c] == stack[-1]:
+                    # remove from top
+                    stack.pop()
+                else:
+                    return False
+        # no more open parentheses left
+        return len(stack) == 0
+
