@@ -1,9 +1,14 @@
 class Solution:
-
-    # time O(n): we iterate over the string * inner loop of all chr types
-    # space O(1): we only track per chr type
-
     def partitionLabels(self, s: str) -> List[int]:
+        '''
+        cat: greedy
+        runtime: O(n)
+        space: O(1)
+        solution:
+        - for each chr that appears, we count occurs until occurs = total
+        - partition = all chrs that appear and their occurs = totals respectively
+        - aka greedy as we chose to end the partition asap
+        '''
         partitions = []
 
         # track count of all chrs

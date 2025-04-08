@@ -1,9 +1,16 @@
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        # find min and max
-        # l = buy, r = sell
-        # rule: l < r
-        # if r value smaller than l, we move l to r
+        '''
+        cat: sliding window
+        runtime: O(n)
+        space: O(1)
+        solution:
+        - L ptr = buy, R ptr = sell
+        - L must always be lowest and R must always be highest
+        - R cannot be earlier than L
+        - profit = R - L
+        - if value of R <= L, then move L to R as the new lowest
+        '''
         max_profit = 0
         l = 0
         r = 1

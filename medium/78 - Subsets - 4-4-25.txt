@@ -1,8 +1,13 @@
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        # backtracking:
-        # lhs = include num, rhs = exclude num
-        # subset once reach leaf node
+        '''
+        cat: backtracking
+        runtime: O(n)
+        space: O(n)
+        solution:
+        - DFS for every possible combination
+        - lhs = include num, rhs = exclude num
+        '''
         results = []
         curr = []
 

@@ -1,26 +1,49 @@
-class Solution:
-    def isValid(self, s: str) -> bool:
-        # map of corr. open and close parentheses
-        # every open parentheses added to stack
-        # every close must corr. to stack of open parentheses
-        close_map = {
-            ')': '(',
-            '}': '{',
-            ']': '[',
-        }
-        stack = []
-        for c in s:
-            # is open
-            if c not in close_map:
-                stack.append(c)
-            # close
-            else:
-                # if top open parentheses match
-                if stack and close_map[c] == stack[-1]:
-                    # remove from top
-                    stack.pop()
-                else:
-                    return False
-        # no more open parentheses left
-        return len(stack) == 0
+from collections import deque
 
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        '''
+        cat: sliding window
+        runtime: O(n*k)
+        space: O(n)
+        solution (naive):
+        - find max for each window, runtime O(n*k)
+        '''
+        '''
+        cat: sliding window
+        runtime: O(n)
+        space: O(n)
+        solution (optimal):
+        - monotonically decreasing queue
+        - queue holds idx of num elems in decrasing order
+        - new elem added from RHS, smaller elems are popped
+        - so we can be sure LHS is always largest num elem
+        - all idx are in the same order as in nums
+        - as we slide across nums, LHS is always largest in the window
+        - remove LHS once idx out of bounds
+        '''
+        results = []
+        queue = deque()
+        l = r = 0
+
+        while r < len(nums):
+            # remove smaller elems to the left
+            while queue and nums[queue[-1]] < nums[r]:
+                queue.pop()
+            
+            # add curr to rhs as it is smallest in queue
+            queue.append(r)
+
+            # if we reach the end of current window, lhs is max
+            if r - l + 1 == k:
+                results.append(nums[queue[0]])
+                l += 1
+            
+            # out of bounds check
+            if queue[0] < l:
+                queue.popleft()
+            
+            # continue moving right
+            r += 1
+        
+        return results
