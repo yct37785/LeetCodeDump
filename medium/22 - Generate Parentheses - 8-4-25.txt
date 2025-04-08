@@ -1,0 +1,30 @@
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        '''
+        cat: backtracking
+        runtime: O(n)
+        space: O(n)
+        solution:
+        - DFS for every possible combination
+        - track open and close counts for each path
+        - close count must always be <= open count
+        '''
+        results = []
+        curr = []
+
+        def dfs(open_count, close_count):
+            # if reach end
+            if open_count == close_count == n:
+                results.append(''.join(curr))
+            # open
+            if open_count < n:
+                curr.append('(')
+                dfs(open_count + 1, close_count)
+                curr.pop()
+            # close
+            if close_count < n and close_count < open_count:
+                curr.append(')')
+                dfs(open_count, close_count + 1)
+                curr.pop()
+        dfs(0, 0)
+        return results
