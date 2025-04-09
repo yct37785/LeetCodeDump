@@ -1,0 +1,15 @@
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        '''
+        cat: arr & hashmap
+        runtime: O(n)
+        space: O(n)
+        solution:
+        - use map to track for duplicates
+        '''
+        dup_map = {}
+        for num in nums:
+            if num in dup_map:
+                return True
+            dup_map[num] = 0
+        return False

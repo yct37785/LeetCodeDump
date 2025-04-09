@@ -1,0 +1,17 @@
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        '''
+        cat: arr & hashmap
+        runtime: O(n)
+        space: O(n)
+        solution:
+        - even my grandma can solve this lol
+        '''
+        nums_map = {}
+        for i in range(len(nums)):
+            num = nums[i]
+            # does other sum exist?
+            if target - num in nums_map:
+                return [i, nums_map[target - num]]
+            # add to nums_map
+            nums_map[num] = i
