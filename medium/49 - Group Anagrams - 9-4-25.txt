@@ -1,0 +1,30 @@
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        '''
+        cat: arr & hashmap
+        runtime: O(n)
+        space: O(n)
+        solution:
+        - annagrams are grouped by their signatures
+        - signature = list of 26 chrs and occur count
+        - use tuple to convert list to valid map key
+        '''
+
+        signature_map = {}
+        results = []
+
+        # for each str
+        for s in strs:
+            # get signature of each str
+            chr_list = [0] * 26
+            for c in s:
+                chr_list[ord(c) - 97] += 1
+            sig = tuple(chr_list)
+            # grp by signature
+            if sig not in signature_map:
+                signature_map[sig] = len(results)
+                results.append([])
+            results[signature_map[sig]].append(s)
+        
+        return results
+
