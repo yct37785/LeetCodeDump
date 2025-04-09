@@ -1,0 +1,44 @@
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        '''
+        cat: arr & hashmap
+
+        solution (naive):
+        - count nums occur -> O(n)
+        - sort count descending -> O(n*logn)
+        - retrieve the first K elems
+
+        solution (naive 2):
+        - count nums occur -> O(n)
+        - heapify -> O(n)
+        - pop from maxheap -> O(logn)
+        - pop the first K elems -> O(k)
+
+        solution (optimal):
+        - bucket sort
+        - k is in the range of unique elems in the arr
+        - we have an arr where each bucket idx is the count of each num
+        - at each bucket, add num whose count = that bucket idx
+        - each bucket stores a map, when +1 we move num to next bucket
+        '''
+        # for convinience, max idx = length of nums
+        count_bucket_list = [{} for i in range(len(nums) + 1)]
+
+        # map to hold curr count of each num
+        num_count = {}
+        for num in nums:
+            curr_count = num_count.get(num, 0)
+            # shift to next bucket
+            count_bucket_list[curr_count].pop(num, None)
+            count_bucket_list[curr_count + 1][num] = 0
+            # increment
+            num_count[num] = curr_count + 1
+        
+        # retrieve top k
+        results = []
+        for i in range(len(count_bucket_list) - 1, 0, -1):
+            for num in count_bucket_list[i]:
+                if len(results) == k:
+                    return results
+                results.append(num)
+        return results
