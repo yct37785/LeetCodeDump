@@ -1,41 +1,36 @@
 class Solution:
-    def partitionLabels(self, s: str) -> List[int]:
+    def characterReplacement(self, s: str, k: int) -> int:
         '''
-        cat: greedy
-        runtime: O(n)
+        cat: sliding window
+        runtime: O(26*n)
         space: O(1)
         solution:
-        - for each chr that appears, we count occurs until occurs = total
-        - partition = all chrs that appear and their occurs = totals respectively
-        - aka greedy as we chose to end the partition asap
+        - sliding window
+        - for each window:
+          * as long as gap_count <= k it is valid
+          * if not valid, L++
+          * if valid, R++
+          * ap_count = window len - most common alpha
         '''
-        partitions = []
+        alpha_counts = {}
 
-        # track count of all chrs
-        c_counts = {}
-        for c in s:
-            c_counts[c] = c_counts.get(c, 0) + 1
+        def most_common_alpha_count():
+           return max(alpha_counts.values())
         
-        # track occurrences of the chrs
-        c_occurs = {}
-        partition_count = 0
-        none_zero_occur = 0
-        # iterate s
-        for i in range(len(s)):
-            partition_count += 1
-            c = s[i]
-            # c occurs
-            if c not in c_occurs:
-                none_zero_occur += 1
-                c_occurs[c] = c_counts[c]
-            c_occurs[c] -= 1
-            # check if 0
-            if c_occurs[c] == 0:
-                none_zero_occur -= 1
-            # we found the partition
-            if none_zero_occur == 0:
-                partitions.append(partition_count)
-                partition_count = 0
-                c_occurs.clear()
-        return partitions
+        l = 0
+        r = 0
+        longest_series_len = 0
+
+        while r < len(s):
+            # move right
+            alpha_counts[s[r]] = alpha_counts.get(s[r], 0) + 1
+            # move left
+            while (r - l + 1) - most_common_alpha_count() > k:
+                alpha_counts[s[l]] -= 1
+                l += 1
+            # window is valid
+            if longest_series_len < (r - l + 1):
+                longest_series_len = r - l + 1
+            r += 1
         
+        return longest_series_len
