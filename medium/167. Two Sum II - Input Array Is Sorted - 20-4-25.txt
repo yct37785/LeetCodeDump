@@ -17,7 +17,7 @@ class Solution:
         - if sum > target, L++
         - guranteed no larger LHS pairs
         - runtime: O(n)
-        - spacetime: O(1)
+        - space: O(1)
         '''
         l = 0
         r = len(numbers) # pair with last idx will never be < target

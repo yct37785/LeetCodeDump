@@ -1,0 +1,46 @@
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        '''
+        given:
+        - str s
+        constraints:
+        - s could be len 0
+        - substr = consecutive sequence
+        output:
+        - longest non-dup substr length
+        solution:
+        - sliding window to check substr
+        - hashmap tracks dup chrs
+        - RHS to expand substr:
+            * encounter dup = end of substr
+            * del all chrs from hashmap
+            * reset LHS and RHS to dup (new starting pos)
+        - edge cases:
+            * substr reaches end w/o dup: simply check longest substr len outside loop
+        runtime: O(n)
+        space: O(1)
+        '''
+        longest_len = 0
+        l, r = 0, 0
+        chr_map = {}
+        while r < len(s):
+            # is dup?
+            if s[r] in chr_map:
+                # get longest substr len
+                if longest_len < r - l:
+                    longest_len = r - l
+                # del chrs out of LHS range
+                for i in range(l, chr_map[s[r]]):
+                    del chr_map[s[i]]
+                # move LHS to just after initial idx
+                l = chr_map[s[r]] + 1
+                # set new idx
+                chr_map[s[r]] = r
+            # assign idx
+            chr_map[s[r]] = r
+            # advance RHS
+            r += 1
+        # calculate substr len
+        if longest_len < r - l:
+            longest_len = r - l
+        return longest_len
